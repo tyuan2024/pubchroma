@@ -74,6 +74,39 @@ is_colorblind_safe("science")  # FALSE
 list_colorblind_safe()
 ```
 
+## ggplot2 Integration
+
+```r
+library(ggplot2)
+library(pubchroma)
+
+# Scatter plot with Nature palette
+ggplot(mtcars, aes(wt, mpg, colour = factor(cyl))) +
+  geom_point(size = 3) +
+  scale_color_pubchroma("nature") +
+  theme_classic()
+
+# Bar chart with JAMA palette
+ggplot(mtcars, aes(factor(cyl), fill = factor(cyl))) +
+  geom_bar() +
+  scale_fill_pubchroma("jama") +
+  theme_classic()
+
+# Reverse palette order
+ggplot(mtcars, aes(wt, mpg, colour = factor(cyl))) +
+  geom_point() +
+  scale_color_pubchroma("nejm", direction = -1)
+```
+
+Available scales:
+
+| Function | Aesthetic |
+|---|---|
+| `scale_color_pubchroma(journal, palette, direction)` | colour |
+| `scale_colour_pubchroma(journal, palette, direction)` | colour (alias) |
+| `scale_fill_pubchroma(journal, palette, direction)` | fill |
+| `pubchroma_pal(journal, palette, direction)` | raw palette function |
+
 ## API Reference
 
 Both Python and R expose identical function names:
