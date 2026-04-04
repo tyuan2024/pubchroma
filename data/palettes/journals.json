@@ -1,0 +1,131 @@
+{
+  "nature": {
+    "name": "Nature",
+    "publisher": "Nature Portfolio",
+    "url": "https://www.nature.com",
+    "palettes": {
+      "main": {
+        "colors": ["#E64B35", "#4DBBD5", "#00A087", "#3C5488", "#F39B7F", "#8491B4", "#91D1C2", "#DC0000", "#7E6148", "#B09C85"],
+        "colorblind_safe": true,
+        "description": "Nature journal primary palette (10 colors)",
+        "type": "qualitative"
+      },
+      "light": {
+        "colors": ["#FF9999", "#99CCFF", "#99FFCC", "#9999FF", "#FFCC99"],
+        "colorblind_safe": true,
+        "description": "Nature journal light palette (5 colors)",
+        "type": "qualitative"
+      }
+    }
+  },
+  "science": {
+    "name": "Science",
+    "publisher": "AAAS",
+    "url": "https://www.science.org",
+    "palettes": {
+      "main": {
+        "colors": ["#3B4992", "#EE0000", "#008B45", "#631879", "#008280", "#BB0021", "#5F559B", "#A20056", "#808180", "#1B1919"],
+        "colorblind_safe": false,
+        "description": "Science journal primary palette (10 colors)",
+        "type": "qualitative"
+      }
+    }
+  },
+  "cell": {
+    "name": "Cell",
+    "publisher": "Cell Press",
+    "url": "https://www.cell.com",
+    "palettes": {
+      "main": {
+        "colors": ["#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#A65628", "#F781BF", "#999999"],
+        "colorblind_safe": false,
+        "description": "Cell Press primary palette (8 colors)",
+        "type": "qualitative"
+      }
+    }
+  },
+  "nejm": {
+    "name": "New England Journal of Medicine",
+    "publisher": "NEJM Group",
+    "url": "https://www.nejm.org",
+    "palettes": {
+      "main": {
+        "colors": ["#BC3C29", "#0072B5", "#E18727", "#20854E", "#7876B1", "#6F99AD", "#FFDC91", "#EE4C97"],
+        "colorblind_safe": false,
+        "description": "NEJM primary palette (8 colors)",
+        "type": "qualitative"
+      }
+    }
+  },
+  "lancet": {
+    "name": "The Lancet",
+    "publisher": "Elsevier",
+    "url": "https://www.thelancet.com",
+    "palettes": {
+      "main": {
+        "colors": ["#00468B", "#ED0000", "#42B540", "#0099B4", "#925E9F", "#FDAF91", "#AD002A", "#ADB6B6"],
+        "colorblind_safe": false,
+        "description": "Lancet primary palette (8 colors)",
+        "type": "qualitative"
+      }
+    }
+  },
+  "jama": {
+    "name": "JAMA",
+    "publisher": "AMA",
+    "url": "https://jamanetwork.com",
+    "palettes": {
+      "main": {
+        "colors": ["#374E55", "#DF8F44", "#00A1D5", "#B24745", "#79AF97", "#6A6599", "#80796B"],
+        "colorblind_safe": true,
+        "description": "JAMA primary palette (7 colors)",
+        "type": "qualitative"
+      }
+    }
+  },
+  "pnas": {
+    "name": "PNAS",
+    "publisher": "National Academy of Sciences",
+    "url": "https://www.pnas.org",
+    "palettes": {
+      "main": {
+        "colors": ["#3366CC", "#DC3912", "#FF9900", "#109618", "#990099", "#0099C6", "#DD4477", "#66AA00", "#B82E2E", "#316395"],
+        "colorblind_safe": false,
+        "description": "PNAS primary palette (10 colors)",
+        "type": "qualitative"
+      }
+    }
+  },
+  "bmj": {
+    "name": "BMJ",
+    "publisher": "BMJ Publishing Group",
+    "url": "https://www.bmj.com",
+    "palettes": {
+      "main": {
+        "colors": ["#005B9A", "#E44D26", "#65A637", "#7B2D8B", "#F5A623", "#4A4A4A", "#D0021B"],
+        "colorblind_safe": false,
+        "description": "BMJ primary palette (7 colors)",
+        "type": "qualitative"
+      }
+    }
+  },
+  "colorblind": {
+    "name": "Colorblind Safe",
+    "publisher": "Universal",
+    "url": null,
+    "palettes": {
+      "okabe_ito": {
+        "colors": ["#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#000000"],
+        "colorblind_safe": true,
+        "description": "Okabe-Ito colorblind-safe palette (8 colors)",
+        "type": "qualitative"
+      },
+      "wong": {
+        "colors": ["#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"],
+        "colorblind_safe": true,
+        "description": "Wong colorblind-safe palette (8 colors)",
+        "type": "qualitative"
+      }
+    }
+  }
+}

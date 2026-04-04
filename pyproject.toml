@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pubchroma"
+version = "0.1.0"
+description = "Journal-inspired color palettes for scientific figures"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "tyuan2024", email = "tyuan2024@126.com" }]
+keywords = ["color", "palette", "visualization", "scientific", "figures", "biomedical"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
+requires-python = ">=3.9"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "pytest-cov", "ruff", "mypy"]
+plot = ["matplotlib>=3.5"]
+
+[project.urls]
+Homepage = "https://github.com/tyuan2024/pubchroma"
+Repository = "https://github.com/tyuan2024/pubchroma"
+Issues = "https://github.com/tyuan2024/pubchroma/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+pubchroma = ["data/*.json"]
+
+[tool.ruff]
+line-length = 99
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+
+[tool.mypy]
+python_version = "3.9"
+strict = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests/python"]
+addopts = "--cov=pubchroma --cov-report=term-missing"

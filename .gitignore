@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# R
+*.Rproj.user
+*.Rhistory
+*.RData
+*.Ruserdata
+R/.Rcheck/
+R/NAMESPACE.bak
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Generated examples
+examples/python/palette_preview.png
+examples/r/palette_preview.png
