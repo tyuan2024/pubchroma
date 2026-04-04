@@ -1,20 +1,20 @@
 #' @keywords internal
+#' @importFrom jsonlite read_json
 "_PACKAGE"
 
-# Internal: load palette data once
-.pc_data <- NULL
+# Internal: cache environment to avoid locked-binding issues under R CMD check
+.pc_cache <- new.env(parent = emptyenv())
 
 .get_data <- function() {
-  if (is.null(.pc_data)) {
+  if (is.null(.pc_cache$data)) {
     json_path <- system.file("extdata", "journals.json", package = "pubchroma")
     if (!nzchar(json_path)) {
-      # Fallback for development (running from R/ directory)
       json_path <- file.path(
         dirname(dirname(dirname(sys.frame(1)$ofile))),
         "data", "palettes", "journals.json"
       )
     }
-    .pc_data <<- jsonlite::read_json(json_path)
+    .pc_cache$data <- jsonlite::read_json(json_path)
   }
-  .pc_data
+  .pc_cache$data
 }
