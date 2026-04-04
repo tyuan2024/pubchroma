@@ -12,6 +12,8 @@ PubChroma provides color palettes that match the visual style of major scientifi
 
 **Supported journals**: Nature, Science, Cell, NEJM, Lancet, JAMA, PNAS, BMJ, plus universal colorblind-safe palettes.
 
+![PubChroma palette preview](docs/palette_preview.png)
+
 ## Installation
 
 ### Python
