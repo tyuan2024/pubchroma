@@ -23,7 +23,7 @@ jobs:
 
       - name: Install package and dev dependencies
         run: |
-          pip install -e ".[dev]"
+          pip install -e ".[dev,plot]"
 
       - name: Run tests with coverage
         run: |
