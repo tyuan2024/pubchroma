@@ -1,0 +1,74 @@
+# Accessibility rules for figure colour and design
+# Referenced by figurelint_bio.accessibility and pubchroma.validate.
+#
+# Colour-vision deficiency prevalence (approximate):
+#   Deuteranopia / deuteranomaly (red-green): ~6% males, ~0.4% females
+#   Protanopia / protanomaly (red-green):     ~2% males, ~0.1% females
+#   Tritanopia (blue-yellow):                 ~0.01% population
+#   Achromatopsia (full):                     ~0.003% population
+
+accessibility:
+
+  colorblind_safe_threshold:
+    description: >
+      A palette is considered colorblind-safe if it is distinguishable
+      under deuteranopia and protanopia simulation. This covers the
+      two most prevalent forms of colour-vision deficiency.
+    verified_safe_palettes:
+      - clinical_categorical_conservative_4
+      - clinical_categorical_conservative_6
+      - omics_diverging_cns_3
+      - omics_sequential_cns_7
+      - engineering_sequential_contrast_7
+      - mechanism_highlight_neutral_4
+      - universal_colorblind_okabe_ito_8
+    notes: >
+      Palettes are not independently simulated in this version. Safe
+      classification is based on source palette provenance and published
+      colour-vision deficiency guidelines. Empirical simulation is planned
+      for a future release.
+
+  grayscale_safe_criteria:
+    description: >
+      A palette is considered grayscale-safe if its colours convert to
+      sufficiently distinct luminance values when rendered in grayscale.
+      Minimum luminance separation: 20 perceptual units (CIELAB L*).
+    verified_safe_palettes:
+      - omics_diverging_cns_3
+      - omics_sequential_cns_7
+      - engineering_sequential_contrast_7
+      - mechanism_highlight_neutral_4
+    notes: >
+      Grayscale safety is required by journals that still publish
+      print figures without colour, and for PDF accessibility compliance.
+
+  disallowed_patterns:
+    rainbow_gradients:
+      description: >
+        Rainbow (jet, hsv, spectral) gradients create perceptual artefacts
+        and are not safe for any form of colour-vision deficiency. They are
+        explicitly disallowed in this toolkit.
+      detection_heuristic: >
+        Detect by palette name matching known rainbow identifiers.
+        Hex-level simulation is planned for a future release.
+
+    red_green_bicolor:
+      description: >
+        Pure red (#FF0000, #FF3333) paired with pure green (#00FF00, #33CC00)
+        is the canonical deuteranopia failure mode. This combination appears
+        frequently in biology (cell viability, western blot quantification)
+        and should be replaced.
+      safer_alternative: >
+        Replace red-green with magenta-green (or better, Okabe-Ito palette)
+        for colour-blind accessible biology figures.
+
+  font_and_contrast:
+    minimum_font_size_pt: 6
+    recommended_font_size_pt: 8
+    minimum_dpi_raster: 300
+    recommended_dpi_raster: 600
+    minimum_dpi_lineart: 600
+    notes: >
+      Font and resolution requirements are derived from common journal
+      author guidelines (Nature, Science, Cell, NEJM family) and are
+      not universal. Always verify against the target journal's specifications.

@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: >
+  If you use PubChroma or FigureLint-Bio in published work, please cite
+  using the metadata below.
+type: software
+title: "PubChroma + FigureLint-Bio: journal-inspired colour recommendation and figure QA"
+version: 0.3.0
+date-released: "2025-04-05"
+license: MIT
+url: https://github.com/tyuan2024/pubchroma
+repository-code: https://github.com/tyuan2024/pubchroma
+abstract: >
+  PubChroma provides field-aware and figure-aware colour palette recommendations
+  for biomedical and engineering visualizations. FigureLint-Bio is a pre-submission
+  figure quality-assurance tool that lints structured figure specifications against
+  palette, accessibility, typography, and export rules.
+authors:
+  - family-names: "Yuan"
+    given-names: "Tian"
+    alias: tyuan2024
+keywords:
+  - color palette
+  - scientific visualization
+  - biomedical figures
+  - figure quality assurance
+  - accessibility
+  - colorblind safety
+  - publication figures

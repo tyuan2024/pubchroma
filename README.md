@@ -1,6 +1,6 @@
-# PubChroma
+# PubChroma + FigureLint-Bio
 
-**Journal-inspired color palettes for scientific figures** — Python and R, with a single source of truth.
+**A journal-inspired colour recommendation and figure QA toolkit for biomedical and engineering visualizations.**
 
 [![PyPI version](https://img.shields.io/pypi/v/pubchroma.svg)](https://pypi.org/project/pubchroma/)
 [![Python](https://img.shields.io/pypi/pyversions/pubchroma.svg)](https://pypi.org/project/pubchroma/)
@@ -8,172 +8,224 @@
 [![R CI](https://github.com/tyuan2024/pubchroma/actions/workflows/r.yml/badge.svg)](https://github.com/tyuan2024/pubchroma/actions/workflows/r.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## Overview
+> **Scope note**: This toolkit provides journal-*inspired* colour guidance and pre-submission figure QA.
+> It does not represent official editorial standards of any journal or publisher.
+> All palette selections and lint rule thresholds are derived from published
+> accessibility research and common author guidelines.
 
-PubChroma provides color palettes that match the visual style of major scientific journals, making it easy to produce publication-quality figures for biomedical and engineering papers.
+---
 
-**Supported journals**: Nature, Science, Cell, NEJM, Lancet, JAMA, PNAS, BMJ, plus universal colorblind-safe palettes (Okabe-Ito, Wong).
+## Why this project
 
-![PubChroma palette preview](docs/palette_preview.png)
+Most colour palette libraries solve the *selection* problem in isolation. They do not account for:
+
+- **Field conventions** — palettes appropriate for a clinical trial figure differ from those for a single-cell atlas.
+- **Figure type** — a diverging heatmap has different requirements than a categorical boxplot.
+- **Pre-submission audit** — there is no standard tool for checking that a figure's font size, DPI, legend count, and accessibility claims are internally consistent before journal submission.
+
+PubChroma and FigureLint-Bio address these gaps as a single, minimal, rule-driven toolkit.
+
+---
+
+## Modules
+
+### PubChroma
+
+A rule-based colour recommendation and validation library.
+
+- `get_colors(journal, palette, n)` — look up colours from the legacy journal-keyed registry
+- `recommend_palette(field, figure_type, ...)` — field-aware and figure-aware palette selection
+- `validate_palette(palette_id, ...)` — cross-reference a palette against registry metadata and field rules
+- `pubchroma.matplotlib` — matplotlib colormap and cycler integration
+- R: `recommend_palette()`, `validate_palette()`, `scale_color_pubchroma()`
+
+### FigureLint-Bio
+
+A spec-based pre-submission figure QA tool.
+
+- `lint_figure_spec(spec)` — run 15 lint rules across palette, accessibility, typography, export, and annotation categories
+- `generate_markdown_report(report)` — render results as a Markdown report
+- Three severity levels: **error**, **warning**, **suggestion**
+- Outputs a 0–100 score and a machine-readable report dict
+
+All rule data lives in `data/*.yml` — consumed by both Python and R without duplication.
+
+---
+
+## Quick start
+
+```bash
+pip install pubchroma[recommend,plot]
+```
+
+```python
+from pubchroma.recommend import recommend_palette
+from figurelint_bio import lint_figure_spec, generate_markdown_report
+
+# 1. Get a field-aware palette recommendation
+result = recommend_palette(
+    field="clinical",
+    figure_type="box",
+    variable_type="categorical",
+    n_groups=4,
+    colorblind_safe=True,
+)
+print(result["palette_id"])   # clinical_categorical_conservative_4
+print(result["hex"])          # ['#374E55', '#DF8F44', '#00A1D5', '#B24745']
+
+# 2. Lint the figure spec before submission
+spec = {
+    "field": "clinical",
+    "figure_type": "box",
+    "variable_type": "categorical",
+    "palette_name": result["palette_id"],
+    "n_groups": 4,
+    "font_size_pt": 8,
+    "dpi": 600,
+    "width_mm": 89,
+    "colorblind_safe": True,
+    "export_format": "pdf",
+}
+report = lint_figure_spec(spec)
+print(report["summary"])   # No issues found.
+print(generate_markdown_report(report))
+```
+
+### R quick start
+
+```r
+# Install from GitHub
+remotes::install_github("tyuan2024/pubchroma", subdir = "R")
+
+library(pubchroma)
+
+# Recommend a palette
+result <- recommend_palette("clinical", "box", n_groups = 4, colorblind_safe = TRUE)
+result$palette_id
+result$hex
+
+# Lint a figure spec
+spec <- list(
+  field = "clinical", figure_type = "box", variable_type = "categorical",
+  palette_name = "clinical_categorical_conservative_4",
+  font_size_pt = 8, dpi = 600, width_mm = 89
+)
+report <- lint_figure_spec(spec)
+cat(report$summary)
+```
+
+---
+
+## Supported fields and figure types
+
+| Field | Typical figure types |
+|---|---|
+| `clinical` | bar, box, violin, line (survival) |
+| `omics` | heatmap, volcano, scatter |
+| `singlecell` | umap, scatter |
+| `mechanism` | scatter, line, bar |
+| `engineering` | bar, line, scatter, heatmap |
+
+---
+
+## FigureLint-Bio rules (v0.1)
+
+| Category | Rules |
+|---|---|
+| Palette | field mismatch, figure-type mismatch, rainbow gradient, red-green bicolor |
+| Accessibility | colorblind_safe / grayscale_safe claim verification, clinical field suggestion |
+| Category count | capacity exceeded, near-limit suggestion |
+| Diverging scale | undeclared midpoint |
+| Typography | font below 6 pt (error), below 8 pt (suggestion) |
+| Export | DPI below 300, figure width below 80 mm, raster for line art |
+| Legend | more than 10 items, long label |
+| Multi-panel | shared legend suggestion |
+| Statistics | annotation on heatmap, stars without method note |
+
+---
+
+## Directory structure
+
+```
+pubchroma/
+├── src/
+│   ├── pubchroma/          # Palette lookup, recommend, validate, matplotlib integration
+│   └── figurelint_bio/     # Figure spec lint and reporting
+├── data/
+│   ├── palettes/journals.json      # Legacy palette registry (journal-keyed)
+│   ├── palettes.yml                # Field-aware palette definitions
+│   ├── field_rules.yml             # Per-field conventions
+│   ├── lint_rules.yml              # Lint rule definitions
+│   └── accessibility_rules.yml    # Accessibility thresholds and criteria
+├── R/                      # R package (palettes, recommend, validate, figurelint, ggplot2)
+├── examples/
+│   ├── python/             # Runnable Python examples
+│   ├── specs/              # Example figure spec JSON files
+│   └── r/                  # R examples
+├── tests/python/           # Python test suite (78 tests, ≥80% coverage)
+├── docs/                   # Architecture and design notes
+└── skill/SKILL.md          # Machine-readable skill specification
+```
+
+---
+
+## Palette registry
+
+The `data/palettes.yml` file defines field-aware palettes with metadata:
+- `colorblind_safe`, `grayscale_safe` flags
+- `n_max` (recommended category limit)
+- `field_tags`, `figure_tags`
+- `rationale` (one-line design note)
+- `journal_family`: `cns_inspired` | `medical_conservative` | `engineering_high_contrast` | `universal`
+
+All palette data is the single source of truth for both Python and R.
+
+---
 
 ## Installation
 
-### Python
-
 ```bash
+# Core palette lookup (no dependencies)
 pip install pubchroma
 
 # With matplotlib integration
 pip install pubchroma[plot]
+
+# With field-aware recommendation and FigureLint-Bio
+pip install pubchroma[recommend]
+
+# Everything
+pip install pubchroma[all]
 ```
 
-### R
-
 ```r
-# From GitHub (development version)
+# R package (development version)
 remotes::install_github("tyuan2024/pubchroma", subdir = "R")
 ```
 
-## Quick Start
+---
 
-### Python
+## Limitations
 
-```python
-import pubchroma as pc
+- Lint is **spec-based**: FigureLint-Bio reads a structured JSON/dict description of a figure.
+  It does not parse rendered images or matplotlib/ggplot2 objects.
+- Colorblind-safety classification is based on palette provenance and published guidelines,
+  not per-pixel simulation.
+- Palette coverage is intentionally narrow. The focus is correctness and extensibility,
+  not breadth.
 
-# List available journals
-pc.list_journals()
-# ['bmj', 'cell', 'colorblind', 'jama', 'lancet', 'nature', 'nejm', 'pnas', 'science']
+See [`docs/limitations.md`](docs/limitations.md) for a complete list.
 
-# Get colors for Nature
-pc.get_colors("nature", n=5)
-# ['#E64B35', '#4DBBD5', '#00A087', '#3C5488', '#F39B7F']
-
-# Check colorblind safety
-pc.is_colorblind_safe("nature")   # True
-pc.is_colorblind_safe("science")  # False
-
-# Get a colorblind-safe palette
-pc.get_colors("colorblind", "okabe_ito")
-
-# List all colorblind-safe palettes
-pc.list_colorblind_safe()
-```
-
-### R
-
-```r
-library(pubchroma)
-
-# List available journals
-list_journals()
-
-# Get colors for NEJM
-get_colors("nejm", n = 5)
-
-# Check colorblind safety
-is_colorblind_safe("nature")   # TRUE
-is_colorblind_safe("science")  # FALSE
-
-# List all colorblind-safe palettes
-list_colorblind_safe()
-```
-
-## Matplotlib Integration
-
-```python
-from pubchroma.matplotlib import get_cmap, get_cycle, show_palette, show_all
-import matplotlib.pyplot as plt
-
-# Quick visual preview of a palette
-show_palette("nature")
-plt.show()
-
-# Preview all palettes at once
-show_all()
-plt.show()
-
-# Use as a matplotlib colormap
-cmap = get_cmap("nature")
-plt.imshow(data, cmap=cmap)
-
-# Set the color cycle for line plots
-plt.rc("axes", prop_cycle=get_cycle("nature"))
-
-# Or per-axes
-fig, ax = plt.subplots()
-ax.set_prop_cycle(get_cycle("nejm"))
-for i in range(5):
-    ax.plot(x, y[i])
-```
-
-## ggplot2 Integration
-
-```r
-library(ggplot2)
-library(pubchroma)
-
-# Scatter plot with Nature palette
-ggplot(mtcars, aes(wt, mpg, colour = factor(cyl))) +
-  geom_point(size = 3) +
-  scale_color_pubchroma("nature") +
-  theme_classic()
-
-# Bar chart with JAMA palette
-ggplot(mtcars, aes(factor(cyl), fill = factor(cyl))) +
-  geom_bar() +
-  scale_fill_pubchroma("jama") +
-  theme_classic()
-
-# Reverse palette order
-ggplot(mtcars, aes(wt, mpg, colour = factor(cyl))) +
-  geom_point() +
-  scale_color_pubchroma("nejm", direction = -1)
-```
-
-Available scales:
-
-| Function | Aesthetic |
-|---|---|
-| `scale_color_pubchroma(journal, palette, direction)` | colour |
-| `scale_colour_pubchroma(journal, palette, direction)` | colour (alias) |
-| `scale_fill_pubchroma(journal, palette, direction)` | fill |
-| `pubchroma_pal(journal, palette, direction)` | raw palette function |
-
-## API Reference
-
-Both Python and R expose identical function names:
-
-| Function | Description |
-|---|---|
-| `list_journals()` | All available journal keys |
-| `list_palettes(journal)` | Palette names for a journal |
-| `get_palette(journal, palette)` | Full palette metadata |
-| `get_colors(journal, palette, n, colorblind_only)` | Hex color codes |
-| `is_colorblind_safe(journal, palette)` | Colorblind-safety check |
-| `list_colorblind_safe()` | All colorblind-safe palettes |
-
-Python matplotlib extras (via `from pubchroma.matplotlib import ...`):
-
-| Function | Description |
-|---|---|
-| `get_cmap(journal, palette, n)` | Matplotlib `ListedColormap` |
-| `get_cycle(journal, palette, n)` | Matplotlib color cycler |
-| `show_palette(journal, palette)` | Visual swatch of one palette |
-| `show_all()` | Visual swatch of all palettes |
-
-## Data
-
-All palette data lives in [`data/palettes/journals.json`](data/palettes/journals.json) — a single source of truth for both languages.
+---
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feat/amazing-feature`)
-3. Add tests for any new functionality
-4. Ensure tests pass: `pytest` (Python) / `testthat::test_local()` (R)
-5. Submit a pull request
+See [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+## Citation
+
+See [`CITATION.cff`](CITATION.cff).
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — see [`LICENSE`](LICENSE).

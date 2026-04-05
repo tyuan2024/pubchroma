@@ -1,0 +1,203 @@
+# FigureLint-Bio lint rule definitions
+# Each rule has:
+#   id:            unique snake_case identifier
+#   severity:      error | warning | suggestion
+#   message:       template string (use {field} placeholders where needed)
+#   applies_to:    list of spec fields this rule inspects
+#   rationale:     brief explanation for documentation
+
+lint_rules:
+
+  # ── Palette × field / figure_type matching ────────────────────────────────
+  palette_field_mismatch:
+    severity: warning
+    message: >
+      Palette '{palette_name}' is not recommended for field '{field}'.
+      Preferred palettes: {preferred}.
+    applies_to: [palette_name, field]
+    rationale: >
+      Different scientific fields have established conventions for colour use.
+      A mismatch does not invalidate the figure but may draw reviewer scrutiny.
+
+  palette_figure_type_mismatch:
+    severity: warning
+    message: >
+      Palette variable type '{palette_var_type}' may not suit figure type
+      '{figure_type}'. A {recommended_var_type} palette is typically expected.
+    applies_to: [palette_name, figure_type, variable_type]
+    rationale: >
+      Heatmaps encoding continuous data should use sequential or diverging
+      palettes; categorical palettes applied to continuous data can obscure
+      quantitative differences.
+
+  # ── Disallowed palette patterns ──────────────────────────────────────────
+  rainbow_palette_detected:
+    severity: error
+    message: >
+      Rainbow or spectral colour gradients are not recommended for scientific
+      figures. They introduce perceptual non-linearity and are not
+      colour-blind safe.
+    applies_to: [palette_name, hex]
+    rationale: >
+      Rainbow maps (jet, hsv, etc.) have well-documented perceptual problems
+      in the scientific visualisation literature.
+
+  red_green_bicolor_detected:
+    severity: error
+    message: >
+      Red-green colour combinations are the most common cause of accessibility
+      failure. Replace with a deuteranopia-safe alternative (e.g. blue-orange
+      or the Okabe-Ito palette).
+    applies_to: [hex]
+    rationale: >
+      ~8% of males have red-green colour-vision deficiency.
+
+  # ── Category count ───────────────────────────────────────────────────────
+  too_many_categories:
+    severity: error
+    message: >
+      {n_groups} categories exceed the recommended maximum ({n_max}) for
+      palette '{palette_name}'. Perceptual discrimination degrades above
+      this threshold.
+    applies_to: [n_groups, palette_name]
+    rationale: >
+      Human colour discrimination is limited. Exceeding palette capacity
+      forces colour reuse or introduces visually ambiguous mappings.
+
+  many_categories_suggestion:
+    severity: suggestion
+    message: >
+      {n_groups} categories is near the upper limit for this palette.
+      Consider grouping less important categories or using a grouped legend.
+    applies_to: [n_groups, palette_name]
+    rationale: Proactive guidance before the error threshold is reached.
+
+  # ── Diverging palette midpoint ────────────────────────────────────────────
+  diverging_no_explicit_midpoint:
+    severity: warning
+    message: >
+      A diverging palette is selected but no explicit midpoint value is
+      declared in the spec. Readers may misinterpret the zero reference.
+    applies_to: [variable_type, palette_name]
+    rationale: >
+      Diverging scales require a meaningful zero point (e.g. logFC = 0,
+      z-score = 0). An undeclared midpoint suggests the scale may be
+      misapplied.
+
+  # ── Accessibility declarations ────────────────────────────────────────────
+  colorblind_safe_claimed_but_palette_unsafe:
+    severity: error
+    message: >
+      The spec declares colorblind_safe=true but palette '{palette_name}'
+      is not marked as colorblind-safe in the palette registry.
+    applies_to: [colorblind_safe, palette_name]
+    rationale: Inconsistency between claim and palette metadata.
+
+  grayscale_safe_claimed_but_palette_unsafe:
+    severity: error
+    message: >
+      The spec declares grayscale_safe=true but palette '{palette_name}'
+      is not marked as grayscale-safe in the palette registry.
+    applies_to: [grayscale_safe, palette_name]
+    rationale: Inconsistency between claim and palette metadata.
+
+  colorblind_safe_not_claimed_for_clinical:
+    severity: suggestion
+    message: >
+      Field 'clinical' figures are recommended to use colorblind-safe
+      palettes. Current palette is not verified colorblind-safe.
+    applies_to: [field, colorblind_safe]
+    rationale: >
+      Medical journals increasingly require or strongly prefer accessible figures.
+
+  # ── Legend ────────────────────────────────────────────────────────────────
+  legend_too_many_items:
+    severity: warning
+    message: >
+      Legend has {legend_items} items. Legends with more than 10 items are
+      difficult to read in print. Consider abbreviated labels or a grouped
+      legend structure.
+    applies_to: [legend_items]
+    rationale: Practical legibility limit in print at typical figure sizes.
+
+  legend_item_label_too_long:
+    severity: suggestion
+    message: >
+      Legend title or item labels may be too long for the declared figure
+      width ({width_mm} mm). Keep legend labels under 30 characters.
+    applies_to: [legend_title, width_mm]
+    rationale: Long labels truncate or overflow in typical journal column widths.
+
+  # ── Typography ────────────────────────────────────────────────────────────
+  font_size_too_small:
+    severity: error
+    message: >
+      Font size {font_size_pt} pt is below the 6 pt minimum. Most journals
+      require at least 6–7 pt for axis labels in final figures.
+    applies_to: [font_size_pt]
+    rationale: >
+      Fonts below 6 pt are illegible in print and will trigger editorial
+      revision requests.
+
+  font_size_small_suggestion:
+    severity: suggestion
+    message: >
+      Font size {font_size_pt} pt is below the commonly recommended 8 pt
+      for axis labels. Consider 8–10 pt for final submission.
+    applies_to: [font_size_pt]
+    rationale: Marginal sizes pass technically but impair readability.
+
+  # ── Export / resolution ───────────────────────────────────────────────────
+  dpi_below_minimum:
+    severity: error
+    message: >
+      DPI {dpi} is below 300. Most journals require ≥300 dpi for raster
+      figures (≥600 dpi for line art).
+    applies_to: [dpi]
+    rationale: Standard journal production requirement.
+
+  figure_width_too_small:
+    severity: warning
+    message: >
+      Figure width {width_mm} mm is below 80 mm (single column minimum
+      for most journals). Verify the target journal's figure size specifications.
+    applies_to: [width_mm]
+    rationale: Figures below minimum column width may be rejected at submission.
+
+  export_format_raster_for_lineart:
+    severity: suggestion
+    message: >
+      Figure type '{figure_type}' contains line art or vector elements.
+      Consider using a vector export format (PDF, SVG, EPS) alongside or
+      instead of '{export_format}'.
+    applies_to: [export_format, figure_type]
+    rationale: Vector formats preserve sharpness at any print resolution.
+
+  # ── Panel complexity ──────────────────────────────────────────────────────
+  multipanel_shared_legend_suggested:
+    severity: suggestion
+    message: >
+      Figure has {panel_count} panels. Multi-panel figures with identical
+      colour mappings should use a shared legend to reduce redundancy.
+    applies_to: [panel_count, n_groups]
+    rationale: Shared legends reduce figure area and improve consistency.
+
+  # ── Statistical annotation ────────────────────────────────────────────────
+  stats_annotation_on_continuous_heatmap:
+    severity: suggestion
+    message: >
+      Statistical annotations (p-values, significance stars) are declared
+      on a heatmap figure. Verify that annotations refer to specific
+      comparisons, not the entire matrix.
+    applies_to: [has_statistics_annotation, figure_type]
+    rationale: Annotating aggregate statistics on heatmaps is often misleading.
+
+  stats_stars_without_method_note:
+    severity: suggestion
+    message: >
+      Statistics annotation style is set to 'stars'. Consider adding a
+      methods note specifying the test used and correction method.
+    applies_to: [statistics_annotation_style]
+    rationale: >
+      Significance stars without stated methods are increasingly flagged
+      by reviewers and editors.

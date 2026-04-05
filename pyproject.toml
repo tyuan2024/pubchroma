@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pubchroma"
-version = "0.2.0"
+version = "0.3.0"
 description = "Journal-inspired color palettes for scientific figures"
 readme = "README.md"
 license = { text = "MIT" }
 authors = [{ name = "tyuan2024", email = "tyuan2024@126.com" }]
-keywords = ["color", "palette", "visualization", "scientific", "figures", "biomedical", "matplotlib", "ggplot2"]
+keywords = ["color", "palette", "visualization", "scientific", "figures", "biomedical", "matplotlib", "ggplot2", "figure-lint", "publication"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
@@ -31,6 +31,8 @@ dependencies = []
 [project.optional-dependencies]
 dev = ["pytest>=7", "pytest-cov", "ruff", "mypy"]
 plot = ["matplotlib>=3.5"]
+recommend = ["pyyaml>=6.0"]
+all = ["matplotlib>=3.5", "pyyaml>=6.0"]
 
 [project.urls]
 Homepage = "https://github.com/tyuan2024/pubchroma"
@@ -43,6 +45,7 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 pubchroma = ["data/*.json", "py.typed"]
+figurelint_bio = ["py.typed"]
 
 [tool.ruff]
 line-length = 99
@@ -57,4 +60,4 @@ strict = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests/python"]
-addopts = "--cov=pubchroma --cov-report=term-missing"
+addopts = "--cov=pubchroma --cov=figurelint_bio --cov-report=term-missing"

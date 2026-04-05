@@ -4,6 +4,30 @@ All notable changes to PubChroma are documented here.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.3.0] - 2025-04-05
+
+### Added
+- **FigureLint-Bio** (`figurelint_bio`): pre-submission figure QA with 15 lint rules,
+  3 severity levels, 0-100 score, and Markdown report generation
+- **PubChroma recommend engine** (`pubchroma.recommend`): `recommend_palette()` —
+  field-aware, figure-type-aware palette selection from shared YAML rules
+- **PubChroma validate** (`pubchroma.validate`): `validate_palette()` —
+  cross-reference palette against registry and field conventions
+- Shared YAML rule files: `data/palettes.yml`, `data/field_rules.yml`,
+  `data/lint_rules.yml`, `data/accessibility_rules.yml`
+- R: `recommend_palette()`, `validate_palette()`, `lint_figure_spec()`
+- New optional extras: `pubchroma[recommend]` (pyyaml), `pubchroma[all]`
+- Example specs: clinical survival, omics heatmap, single-cell UMAP, counter-example
+- Example scripts: `examples/python/clinical_boxplot.py`, `lint_counterexample.py`
+- `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `CITATION.cff`, `skill/SKILL.md`
+- `docs/limitations.md`, `docs/roadmap.md`
+- 78 tests, 82% coverage
+
+### Changed
+- Bumped version to 0.3.0
+- README rewritten as project-level monorepo documentation
+- pyproject.toml: added `recommend` and `all` extras, figurelint_bio coverage
+
 ## [0.2.0] - 2025-04-05
 
 ### Added

@@ -23,11 +23,11 @@ jobs:
 
       - name: Install package and dev dependencies
         run: |
-          pip install -e ".[dev,plot]"
+          pip install -e ".[dev,plot,recommend]"
 
       - name: Run tests with coverage
         run: |
-          pytest tests/python/ --cov=pubchroma --cov-report=term-missing --cov-fail-under=80
+          pytest tests/python/ --cov=pubchroma --cov=figurelint_bio --cov-report=term-missing --cov-fail-under=80
 
       - name: Lint with ruff
         run: ruff check src/

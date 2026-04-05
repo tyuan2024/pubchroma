@@ -1,0 +1,83 @@
+# Field-level figure guidelines
+# Consumed by pubchroma.recommend and figurelint_bio.rules.
+#
+# Each field entry lists preferred properties and disallowed patterns.
+
+fields:
+
+  clinical:
+    preferred_journal_families: [medical_conservative, universal]
+    preferred_variable_types: [categorical]
+    preferred_palette_ids:
+      - clinical_categorical_conservative_4
+      - clinical_categorical_conservative_6
+      - universal_colorblind_okabe_ito_8
+    disallowed_palettes: [rainbow, red_green_bicolor]
+    colorblind_safe_required: false
+    colorblind_safe_recommended: true
+    max_categories: 8
+    notes: >
+      Clinical figures (survival curves, subgroup bar charts, forest plots)
+      benefit from conservative saturation. Avoid highly saturated hues that
+      may imply emphasis beyond the data.
+
+  omics:
+    preferred_journal_families: [cns_inspired, universal]
+    preferred_variable_types: [diverging, sequential]
+    preferred_palette_ids:
+      - omics_diverging_cns_3
+      - omics_sequential_cns_7
+    disallowed_palettes: [rainbow]
+    colorblind_safe_required: false
+    colorblind_safe_recommended: true
+    max_categories: 10
+    notes: >
+      Omics figures (heatmaps, volcano plots) frequently encode continuous
+      quantities. Diverging scales should have an explicit white or neutral
+      midpoint. Rainbow gradients obscure quantitative differences and should
+      not be used.
+
+  singlecell:
+    preferred_journal_families: [cns_inspired]
+    preferred_variable_types: [categorical]
+    preferred_palette_ids:
+      - singlecell_categorical_balanced_12
+      - singlecell_categorical_balanced_20
+    disallowed_palettes: [rainbow, pastel_low_contrast]
+    colorblind_safe_required: false
+    colorblind_safe_recommended: false
+    max_categories: 20
+    notes: >
+      Single-cell figures require high perceptual separation across many
+      categories. Colour-blind safety is often impractical above 8 categories;
+      accessibility should be addressed via shape redundancy or interactive tools.
+
+  mechanism:
+    preferred_journal_families: [cns_inspired, universal]
+    preferred_variable_types: [categorical]
+    preferred_palette_ids:
+      - mechanism_highlight_neutral_4
+      - universal_colorblind_okabe_ito_8
+    disallowed_palettes: [rainbow]
+    colorblind_safe_required: false
+    colorblind_safe_recommended: true
+    max_categories: 6
+    notes: >
+      Mechanism diagrams should use a highlight-neutral strategy: 1-2 saturated
+      colours for the focal pathway and neutral grays for context. Avoid using
+      more than 4 distinct hues.
+
+  engineering:
+    preferred_journal_families: [engineering_high_contrast]
+    preferred_variable_types: [categorical, sequential]
+    preferred_palette_ids:
+      - engineering_categorical_contrast_6
+      - engineering_sequential_contrast_7
+    disallowed_palettes: [rainbow, pastel_low_contrast]
+    colorblind_safe_required: false
+    colorblind_safe_recommended: true
+    max_categories: 8
+    notes: >
+      Engineering figures (benchmark comparisons, parameter sweeps) benefit
+      from high contrast for screen display and grayscale printing. Sequential
+      scales suit continuous performance metrics.
