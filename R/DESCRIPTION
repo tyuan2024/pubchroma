@@ -1,6 +1,6 @@
 Package: pubchroma
 Title: Journal-Inspired Color Palettes for Scientific Figures
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: person("tyuan2024", email = "tyuan2024@126.com", role = c("aut", "cre"))
 Description: Provides color palettes inspired by major scientific journals
     (Nature, Science, Cell, NEJM, Lancet, JAMA, PNAS, BMJ) for use in

@@ -163,6 +163,9 @@ def get_colors(
     if n is None:
         return list(colors)
 
+    if n <= 0:
+        raise ValueError(f"n must be a positive integer, got {n}")
+
     if n <= len(colors):
         return colors[:n]
 

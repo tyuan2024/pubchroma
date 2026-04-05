@@ -4,14 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pubchroma"
-version = "0.1.0"
+version = "0.2.0"
 description = "Journal-inspired color palettes for scientific figures"
 readme = "README.md"
 license = { text = "MIT" }
 authors = [{ name = "tyuan2024", email = "tyuan2024@126.com" }]
-keywords = ["color", "palette", "visualization", "scientific", "figures", "biomedical"]
+keywords = ["color", "palette", "visualization", "scientific", "figures", "biomedical", "matplotlib", "ggplot2"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
@@ -21,6 +21,9 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Visualization",
+    "Operating System :: OS Independent",
+    "Typing :: Typed",
+    "Framework :: Matplotlib",
 ]
 requires-python = ">=3.9"
 dependencies = []
@@ -33,12 +36,13 @@ plot = ["matplotlib>=3.5"]
 Homepage = "https://github.com/tyuan2024/pubchroma"
 Repository = "https://github.com/tyuan2024/pubchroma"
 Issues = "https://github.com/tyuan2024/pubchroma/issues"
+Changelog = "https://github.com/tyuan2024/pubchroma/blob/main/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-pubchroma = ["data/*.json"]
+pubchroma = ["data/*.json", "py.typed"]
 
 [tool.ruff]
 line-length = 99

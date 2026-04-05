@@ -86,6 +86,9 @@ get_colors <- function(journal, palette = "main", n = NULL, colorblind_only = FA
   }
 
   n <- as.integer(n)
+  if (n <= 0L) {
+    stop("n must be a positive integer")
+  }
   if (n <= length(colors)) {
     return(colors[seq_len(n)])
   }

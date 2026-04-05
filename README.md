@@ -2,6 +2,8 @@
 
 **Journal-inspired color palettes for scientific figures** — Python and R, with a single source of truth.
 
+[![PyPI version](https://img.shields.io/pypi/v/pubchroma.svg)](https://pypi.org/project/pubchroma/)
+[![Python](https://img.shields.io/pypi/pyversions/pubchroma.svg)](https://pypi.org/project/pubchroma/)
 [![Python CI](https://github.com/tyuan2024/pubchroma/actions/workflows/python.yml/badge.svg)](https://github.com/tyuan2024/pubchroma/actions/workflows/python.yml)
 [![R CI](https://github.com/tyuan2024/pubchroma/actions/workflows/r.yml/badge.svg)](https://github.com/tyuan2024/pubchroma/actions/workflows/r.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -10,7 +12,7 @@
 
 PubChroma provides color palettes that match the visual style of major scientific journals, making it easy to produce publication-quality figures for biomedical and engineering papers.
 
-**Supported journals**: Nature, Science, Cell, NEJM, Lancet, JAMA, PNAS, BMJ, plus universal colorblind-safe palettes.
+**Supported journals**: Nature, Science, Cell, NEJM, Lancet, JAMA, PNAS, BMJ, plus universal colorblind-safe palettes (Okabe-Ito, Wong).
 
 ![PubChroma palette preview](docs/palette_preview.png)
 
@@ -20,6 +22,9 @@ PubChroma provides color palettes that match the visual style of major scientifi
 
 ```bash
 pip install pubchroma
+
+# With matplotlib integration
+pip install pubchroma[plot]
 ```
 
 ### R
@@ -74,6 +79,34 @@ is_colorblind_safe("science")  # FALSE
 list_colorblind_safe()
 ```
 
+## Matplotlib Integration
+
+```python
+from pubchroma.matplotlib import get_cmap, get_cycle, show_palette, show_all
+import matplotlib.pyplot as plt
+
+# Quick visual preview of a palette
+show_palette("nature")
+plt.show()
+
+# Preview all palettes at once
+show_all()
+plt.show()
+
+# Use as a matplotlib colormap
+cmap = get_cmap("nature")
+plt.imshow(data, cmap=cmap)
+
+# Set the color cycle for line plots
+plt.rc("axes", prop_cycle=get_cycle("nature"))
+
+# Or per-axes
+fig, ax = plt.subplots()
+ax.set_prop_cycle(get_cycle("nejm"))
+for i in range(5):
+    ax.plot(x, y[i])
+```
+
 ## ggplot2 Integration
 
 ```r
@@ -120,9 +153,26 @@ Both Python and R expose identical function names:
 | `is_colorblind_safe(journal, palette)` | Colorblind-safety check |
 | `list_colorblind_safe()` | All colorblind-safe palettes |
 
+Python matplotlib extras (via `from pubchroma.matplotlib import ...`):
+
+| Function | Description |
+|---|---|
+| `get_cmap(journal, palette, n)` | Matplotlib `ListedColormap` |
+| `get_cycle(journal, palette, n)` | Matplotlib color cycler |
+| `show_palette(journal, palette)` | Visual swatch of one palette |
+| `show_all()` | Visual swatch of all palettes |
+
 ## Data
 
 All palette data lives in [`data/palettes/journals.json`](data/palettes/journals.json) — a single source of truth for both languages.
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feat/amazing-feature`)
+3. Add tests for any new functionality
+4. Ensure tests pass: `pytest` (Python) / `testthat::test_local()` (R)
+5. Submit a pull request
 
 ## License
 
