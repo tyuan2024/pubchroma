@@ -8,6 +8,12 @@
 [![R CI](https://github.com/tyuan2024/pubchroma/actions/workflows/r.yml/badge.svg)](https://github.com/tyuan2024/pubchroma/actions/workflows/r.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+![Palette banner](docs/banner_palettes.png)
+
+![Science figure examples](docs/banner_examples.png)
+
+![Workflow](docs/banner_workflow.png)
+
 > **Scope note**: This toolkit provides journal-*inspired* colour guidance and pre-submission figure QA.
 > It does not represent official editorial standards of any journal or publisher.
 > All palette selections and lint rule thresholds are derived from published
