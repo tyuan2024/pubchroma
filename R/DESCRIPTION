@@ -1,11 +1,12 @@
 Package: pubchroma
-Title: Journal-Inspired Color Palettes for Scientific Figures
+Title: Journal-Inspired Color Palettes and Figure QA for Scientific Publications
 Version: 0.3.0
 Authors@R: person("tyuan2024", email = "tyuan2024@126.com", role = c("aut", "cre"))
-Description: Provides color palettes inspired by major scientific journals
-    (Nature, Science, Cell, NEJM, Lancet, JAMA, PNAS, BMJ) for use in
-    biomedical and engineering figures. Includes colorblind-safety checking
-    and integration with ggplot2.
+Description: PubChroma + FigureLint-Bio: a toolkit for journal-inspired colour
+    recommendation and pre-submission figure quality assurance. Provides palettes
+    drawn from Nature, Science, Cell, NEJM, Lancet, JAMA, PNAS, and BMJ with
+    field-aware selection, colorblind-safety checking, palette validation, and
+    figure spec linting for biomedical and engineering visualizations.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
