@@ -5,6 +5,9 @@
 # Internal: cache environment to avoid locked-binding issues under R CMD check
 .pc_cache <- new.env(parent = emptyenv())
 
+# Null-coalescing helper (avoid purrr dependency)
+`%||%` <- function(a, b) if (!is.null(a)) a else b
+
 .get_data <- function() {
   if (is.null(.pc_cache$data)) {
     json_path <- system.file("extdata", "journals.json", package = "pubchroma")

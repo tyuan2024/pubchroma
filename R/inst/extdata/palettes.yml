@@ -1,0 +1,201 @@
+# PubChroma palette definitions
+# Single source of truth consumed by both Python and R.
+#
+# Structure:
+#   palette_id:               unique snake_case identifier
+#     colors: [...]           hex codes, 4-20 entries
+#     n_max: int              recommended maximum categories
+#     colorblind_safe: bool
+#     grayscale_safe: bool
+#     variable_type: categorical | sequential | diverging
+#     journal_family: cns_inspired | medical_conservative | engineering_high_contrast | universal
+#     field_tags: [...]       clinical | omics | singlecell | mechanism | engineering
+#     figure_tags: [...]      bar | box | violin | line | scatter | heatmap | volcano | umap
+#     rationale: str          one-line design rationale
+#     warnings: [...]         optional warnings surfaced on selection
+
+palettes:
+
+  # ── Clinical, categorical, conservative ─────────────────────────────────
+  clinical_categorical_conservative_4:
+    colors: ["#374E55", "#DF8F44", "#00A1D5", "#B24745"]
+    n_max: 4
+    colorblind_safe: true
+    grayscale_safe: false
+    variable_type: categorical
+    journal_family: medical_conservative
+    field_tags: [clinical]
+    figure_tags: [bar, box, violin]
+    rationale: >
+      Low-saturation, warm-cool balance suited to clinical subgroup comparisons.
+      Derived from JAMA palette conventions.
+
+  clinical_categorical_conservative_6:
+    colors: ["#374E55", "#DF8F44", "#00A1D5", "#B24745", "#79AF97", "#6A6599"]
+    n_max: 6
+    colorblind_safe: true
+    grayscale_safe: false
+    variable_type: categorical
+    journal_family: medical_conservative
+    field_tags: [clinical]
+    figure_tags: [bar, box, violin, line]
+    rationale: >
+      Six-color clinical extension. Maintains conservative saturation while
+      providing sufficient discrimination for multi-arm trials.
+
+  # ── Omics, diverging ────────────────────────────────────────────────────
+  omics_diverging_cns_3:
+    colors: ["#3C5488", "#FFFFFF", "#E64B35"]
+    n_max: 3
+    colorblind_safe: true
+    grayscale_safe: true
+    variable_type: diverging
+    journal_family: cns_inspired
+    field_tags: [omics]
+    figure_tags: [heatmap]
+    rationale: >
+      Blue-white-red diverging scale with an explicit white midpoint.
+      Appropriate for z-score and logFC heatmaps where the zero reference
+      must be visually anchored.
+
+  omics_sequential_cns_7:
+    colors: ["#F7FBFF", "#C6DBEF", "#9ECAE1", "#6BAED6", "#3182BD", "#08519C", "#08306B"]
+    n_max: 7
+    colorblind_safe: true
+    grayscale_safe: true
+    variable_type: sequential
+    journal_family: cns_inspired
+    field_tags: [omics]
+    figure_tags: [heatmap, scatter]
+    rationale: >
+      Sequential blue scale for density or expression intensity.
+      Perceptually uniform; grayscale-safe.
+
+  # ── Single-cell, categorical ─────────────────────────────────────────────
+  singlecell_categorical_balanced_12:
+    colors:
+      - "#E64B35"
+      - "#4DBBD5"
+      - "#00A087"
+      - "#3C5488"
+      - "#F39B7F"
+      - "#8491B4"
+      - "#91D1C2"
+      - "#DC0000"
+      - "#7E6148"
+      - "#B09C85"
+      - "#4DB8FF"
+      - "#FFDB6D"
+    n_max: 12
+    colorblind_safe: false
+    grayscale_safe: false
+    variable_type: categorical
+    journal_family: cns_inspired
+    field_tags: [singlecell]
+    figure_tags: [umap, scatter]
+    rationale: >
+      12-color balanced palette for cell-type annotation in UMAP embeddings.
+      Colors are perceptually distributed; not colorblind-safe at full range.
+    warnings:
+      - "Not colorblind-safe; consider limiting to 8 categories or using
+         an accessible alternative."
+
+  singlecell_categorical_balanced_20:
+    colors:
+      - "#E64B35"
+      - "#4DBBD5"
+      - "#00A087"
+      - "#3C5488"
+      - "#F39B7F"
+      - "#8491B4"
+      - "#91D1C2"
+      - "#DC0000"
+      - "#7E6148"
+      - "#B09C85"
+      - "#4DB8FF"
+      - "#FFDB6D"
+      - "#A020F0"
+      - "#228B22"
+      - "#FF69B4"
+      - "#8B4513"
+      - "#00CED1"
+      - "#FF8C00"
+      - "#7B68EE"
+      - "#2E8B57"
+    n_max: 20
+    colorblind_safe: false
+    grayscale_safe: false
+    variable_type: categorical
+    journal_family: cns_inspired
+    field_tags: [singlecell]
+    figure_tags: [umap]
+    rationale: >
+      20-color palette for large single-cell atlases with many cell types.
+      Maximises perceptual separation at the cost of accessibility.
+    warnings:
+      - "Not colorblind-safe. Reserve for exploratory analysis, not primary figures."
+      - "Legends with 20 items are difficult to read. Consider grouping cell types."
+
+  # ── Engineering, sequential / categorical ────────────────────────────────
+  engineering_sequential_contrast_7:
+    colors: ["#FFF7FB", "#ECE2F0", "#D0D1E6", "#A6BDDB", "#67A9CF", "#1C9099", "#016C59"]
+    n_max: 7
+    colorblind_safe: true
+    grayscale_safe: true
+    variable_type: sequential
+    journal_family: engineering_high_contrast
+    field_tags: [engineering]
+    figure_tags: [heatmap, scatter, line]
+    rationale: >
+      High-contrast sequential scale for magnitude or performance metrics.
+      Distinguishable under grayscale printing.
+
+  engineering_categorical_contrast_6:
+    colors: ["#3B4992", "#EE0000", "#008B45", "#631879", "#008280", "#BB0021"]
+    n_max: 6
+    colorblind_safe: false
+    grayscale_safe: false
+    variable_type: categorical
+    journal_family: engineering_high_contrast
+    field_tags: [engineering]
+    figure_tags: [bar, line, scatter]
+    rationale: >
+      High-contrast categorical palette for engineering comparisons and
+      performance benchmarks.
+
+  # ── Mechanism, highlight-neutral ─────────────────────────────────────────
+  mechanism_highlight_neutral_4:
+    colors: ["#E64B35", "#3C5488", "#AAAAAA", "#DDDDDD"]
+    n_max: 4
+    colorblind_safe: true
+    grayscale_safe: true
+    variable_type: categorical
+    journal_family: cns_inspired
+    field_tags: [mechanism]
+    figure_tags: [scatter, line, bar]
+    rationale: >
+      Two saturated anchors (highlight) plus two neutral grays (background).
+      Designed for pathway or mechanism diagrams where focal elements
+      must stand out against de-emphasised context.
+
+  # ── Universal colorblind-safe ────────────────────────────────────────────
+  universal_colorblind_okabe_ito_8:
+    colors:
+      - "#E69F00"
+      - "#56B4E9"
+      - "#009E73"
+      - "#F0E442"
+      - "#0072B2"
+      - "#D55E00"
+      - "#CC79A7"
+      - "#000000"
+    n_max: 8
+    colorblind_safe: true
+    grayscale_safe: false
+    variable_type: categorical
+    journal_family: universal
+    field_tags: [clinical, omics, engineering, mechanism]
+    figure_tags: [bar, box, violin, line, scatter]
+    rationale: >
+      Okabe-Ito palette; empirically validated for all major forms of
+      colour-vision deficiency. Strong default for final publication figures.

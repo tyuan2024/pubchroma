@@ -21,6 +21,7 @@
 #'   \code{n_max}, \code{variable_type}, \code{journal_family},
 #'   \code{colorblind_safe}, \code{grayscale_safe}, \code{rationale},
 #'   \code{warnings}.
+#' @importFrom yaml read_yaml
 #' @export
 #' @examples
 #' result <- recommend_palette("clinical", "box", n_groups = 4,
@@ -151,5 +152,3 @@ recommend_palette <- function(
   file.path(repo_root, "data", filename)
 }
 
-# Null-coalescing helper (avoid purrr dependency)
-`%||%` <- function(a, b) if (!is.null(a)) a else b
